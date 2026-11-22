@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hive Web Analytics Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>⚡ Hive Analytics</h2>
+        <nav>
+            <a href="#" class="active">Overview</a>
+            <a href="#traffic">Traffic Trends</a>
+            <a href="#endpoints">Endpoints</a>
+            <a href="#errors">Errors</a>
+            <a href="#clients">Client IPs</a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1>Website Access Log Dashboard</h1>
+            <span class="badge">Apache Hive Engine</span>
+        </header>
+
+        <!-- KPI Summary Cards -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <h3>Total Hits Analyzed</h3>
+                <p class="value">1,482,900</p>
+                <span class="subtext text-success">+14% vs last week</span>
+            </div>
+            <div class="kpi-card">
+                <h3>Total Bandwidth</h3>
+                <p class="value">18.4 GB</p>
+                <span class="subtext">Compressed ORC format</span>
+            </div>
+            <div class="kpi-card">
+                <h3>Success Rate (2xx)</h3>
+                <p class="value">96.8%</p>
+                <span class="subtext text-success">Healthy status</span>
+            </div>
+            <div class="kpi-card">
+                <h3>Error Rate (4xx / 5xx)</h3>
+                <p class="value">3.2%</p>
+                <span class="subtext text-danger">42 broken link alerts</span>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-grid" id="traffic">
+            <div class="chart-card">
+                <h3>Hourly Request Traffic</h3>
+                <canvas id="trafficChart"></canvas>
+            </div>
+            <div class="chart-card" id="errors">
+                <h3>Status Code Distribution</h3>
+                <canvas id="statusChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Tables Section -->
+        <div class="tables-grid">
+            <div class="table-card" id="endpoints">
+                <h3>Top 5 Requested Endpoints</h3>
+                <table>
+                    <thead>
+                        <tr><th>Endpoint URL</th><th>Hits</th><th>Share</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>/products/shoes</code></td><td>54,230</td><td>32.1%</td></tr>
+                        <tr><td><code>/index.html</code></td><td>41,120</td><td>24.3%</td></tr>
+                        <tr><td><code>/api/cart/add</code></td><td>28,400</td><td>16.8%</td></tr>
+                        <tr><td><code>/products/shirts</code></td><td>18,920</td><td>11.2%</td></tr>
+                        <tr><td><code>/contact</code></td><td>9,410</td><td>5.6%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-card" id="clients">
+                <h3>Top Client IP Addresses</h3>
+                <table>
+                    <thead>
+                        <tr><th>IP Address</th><th>Requests</th><th>Data Sent</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>192.168.1.10</code></td><td>8,210</td><td>142.4 MB</td></tr>
+                        <tr><td><code>10.0.0.5</code></td><td>5,430</td><td>98.1 MB</td></tr>
+                        <tr><td><code>192.168.1.20</code></td><td>3,120</td><td>64.5 MB</td></tr>
+                        <tr><td><code>192.168.1.12</code></td><td>2,890</td><td>51.2 MB</td></tr>
+                        <tr><td><code>172.16.0.4</code></td><td>1,420</td><td>2.1 MB</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Line Chart: Hourly Traffic
+        const ctxTraffic = document.getElementById('trafficChart').getContext('2d');
+        new Chart(ctxTraffic, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'],
+                datasets: [{
+                    label: 'Requests / Hr',
+                    data: [1200, 800, 2400, 9500, 14200, 16800, 11500, 6200],
+                    borderColor: '#2563eb',
+                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: { responsive: true, plugins: { legend: { display: false } } }
+        });
+
+        // Doughnut Chart: HTTP Status Codes
+        const ctxStatus = document.getElementById('statusChart').getContext('2d');
+        new Chart(ctxStatus, {
+            type: 'doughnut',
+            data: {
+                labels: ['200 OK', '404 Not Found', '500 Server Error', '304 Not Modified'],
+                datasets: [{
+                    data: [96.8, 2.1, 0.6, 0.5],
+                    backgroundColor: ['#10b981', '#f59e0b', '#ef4444', '#64748b']
+                }]
+            },
+            options: { responsive: true }
+        });
+    </script>
+</body>
+</html>

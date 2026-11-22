@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrendStore - Modern Fashion</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">TrendStore</div>
+        <nav>
+            <a href="/index.html" class="active">Home</a>
+            <a href="/products/shoes">Shoes</a>
+            <a href="/products/shirts">Shirts</a>
+            <a href="/contact">Contact</a>
+            <a href="/checkout" class="cart-btn">Cart (<span id="cart-count">0</span>)</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Elevate Your Daily Style</h1>
+            <p>Discover our latest seasonal collection crafted with comfort and elegance.</p>
+            <a href="/products/shoes" class="cta-btn">Shop Shoes</a>
+        </section>
+
+        <section class="products-section">
+            <h2>Featured Products</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="badge">Popular</div>
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80" alt="Running Shoes">
+                    <h3>AeroBoost Running Shoes</h3>
+                    <p class="price">$120.00</p>
+                    <button onclick="addToCart('AeroBoost Running Shoes')">Add to Cart</button>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=400&q=80" alt="Casual Cotton Shirt">
+                    <h3>Classic Cotton Oxford</h3>
+                    <p class="price">$45.00</p>
+                    <button onclick="addToCart('Classic Cotton Oxford')">Add to Cart</button>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=400&q=80" alt="Leather Sneakers">
+                    <h3>Minimalist Leather Sneakers</h3>
+                    <p class="price">$95.00</p>
+                    <button onclick="addToCart('Minimalist Leather Sneakers')">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 TrendStore Inc. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let count = 0;
+        function addToCart(item) {
+            count++;
+            document.getElementById('cart-count').innerText = count;
+            fetch('/api/cart/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ item: item })
+            }).catch(() => {});
+            alert(item + ' added to cart!');
+        }
+    </script>
+</body>
+</html>
